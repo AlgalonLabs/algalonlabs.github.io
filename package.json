@@ -1,0 +1,13 @@
+{
+  "name": "algalonlabs.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static GitHub Pages site for Algalon Labs",
+  "scripts": {
+    "lint": "prettier --check .",
+    "test": "node scripts/test.mjs"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}

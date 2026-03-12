@@ -1,0 +1,1001 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1a1b26" />
+    <title>Algalon Labs | Tokyo Night Developer Tooling</title>
+    <meta
+      name="description"
+      content="Algalon Labs builds futuristic developer tools for Cardano observability, blockchain visualization, and protocol-grade data systems."
+    />
+    <meta name="author" content="Algalon Labs" />
+    <meta
+      name="keywords"
+      content="Cardano, observability, blockchain visualization, developer tools, data engineering, open source"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Algalon Labs" />
+    <meta
+      property="og:description"
+      content="Developer-oriented tooling for Cardano observability, visualization, and protocol data systems."
+    />
+    <meta property="og:url" content="https://algalonlabs.github.io/" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Algalon Labs" />
+    <meta
+      property="twitter:description"
+      content="Tokyo Night themed company site for a Cardano-focused developer tooling studio."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%231a1b26'/%3E%3Cpath d='M16 48 28 16h8l12 32h-8l-2.4-7H26.4L24 48Zm12.8-13h6.4L32 25.4Z' fill='%237aa2f7'/%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #1a1b26;
+        --bg-elevated: rgba(36, 40, 59, 0.72);
+        --surface: rgba(41, 46, 66, 0.85);
+        --surface-strong: rgba(49, 54, 79, 0.95);
+        --border: rgba(122, 162, 247, 0.22);
+        --border-strong: rgba(122, 162, 247, 0.45);
+        --text: #c0caf5;
+        --text-muted: #9aa5ce;
+        --heading: #e6edf7;
+        --cyan: #73daca;
+        --blue: #7aa2f7;
+        --magenta: #bb9af7;
+        --red: #f7768e;
+        --shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+        --max-width: 1180px;
+        --radius: 28px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Chakra Petch", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at top,
+            rgba(122, 162, 247, 0.14),
+            transparent 30%
+          ),
+          linear-gradient(180deg, #171824 0%, #10131d 100%);
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .background-grid {
+        position: fixed;
+        inset: 0;
+        z-index: -3;
+        background-image:
+          linear-gradient(rgba(122, 162, 247, 0.07) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(122, 162, 247, 0.07) 1px, transparent 1px);
+        background-size: 40px 40px;
+        mask-image: radial-gradient(
+          circle at center,
+          black 35%,
+          transparent 85%
+        );
+      }
+
+      .background-glow {
+        position: fixed;
+        z-index: -2;
+        width: 32rem;
+        height: 32rem;
+        border-radius: 999px;
+        filter: blur(70px);
+        opacity: 0.32;
+        pointer-events: none;
+      }
+
+      .background-glow-a {
+        top: -10rem;
+        right: -8rem;
+        background: rgba(122, 162, 247, 0.55);
+      }
+
+      .background-glow-b {
+        bottom: -10rem;
+        left: -6rem;
+        background: rgba(115, 218, 202, 0.38);
+      }
+
+      .site-header,
+      main,
+      .site-footer {
+        width: min(calc(100% - 2rem), var(--max-width));
+        margin: 0 auto;
+      }
+
+      .site-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.25rem 0 0;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .brand-mark {
+        display: inline-grid;
+        place-items: center;
+        width: 3rem;
+        height: 3rem;
+        border: 1px solid rgba(122, 162, 247, 0.35);
+        border-radius: 16px;
+        color: var(--heading);
+        background: linear-gradient(
+          145deg,
+          rgba(122, 162, 247, 0.22),
+          rgba(187, 154, 247, 0.1)
+        );
+        box-shadow: inset 0 0 24px rgba(122, 162, 247, 0.12);
+        font-family: "IBM Plex Mono", monospace;
+        font-weight: 600;
+      }
+
+      .brand-copy {
+        display: grid;
+        gap: 0.15rem;
+      }
+
+      .brand-copy strong {
+        color: var(--heading);
+        font-size: 1rem;
+        letter-spacing: 0.04em;
+      }
+
+      .brand-copy span {
+        font-size: 0.84rem;
+        color: var(--text-muted);
+      }
+
+      .site-nav {
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.8rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: rgba(26, 27, 38, 0.62);
+        backdrop-filter: blur(18px);
+      }
+
+      .site-nav a {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        transition:
+          color 180ms ease,
+          transform 180ms ease;
+      }
+
+      .site-nav a:hover,
+      .site-nav a:focus-visible {
+        color: var(--heading);
+        transform: translateY(-1px);
+      }
+
+      .section {
+        padding: 5rem 0;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+        gap: 2rem;
+        align-items: center;
+        min-height: calc(100vh - 5rem);
+        padding-top: 4rem;
+      }
+
+      .eyebrow {
+        margin: 0 0 1rem;
+        color: var(--cyan);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.8rem;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 1rem;
+        color: var(--heading);
+        font-size: clamp(3.2rem, 8vw, 6.25rem);
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+      }
+
+      h2 {
+        margin-bottom: 0;
+        color: var(--heading);
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        line-height: 1;
+        letter-spacing: -0.03em;
+      }
+
+      h3 {
+        margin-bottom: 0.75rem;
+        color: var(--heading);
+        font-size: 1.45rem;
+      }
+
+      .hero-text,
+      .glass-card p,
+      .project-card p,
+      .timeline-item p,
+      .contact-card p,
+      .metric-card p {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        line-height: 1.7;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.9rem;
+        margin: 2rem 0;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 3.4rem;
+        padding: 0.8rem 1.3rem;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        transition:
+          transform 200ms ease,
+          border-color 200ms ease,
+          box-shadow 200ms ease,
+          background 200ms ease;
+      }
+
+      .button:hover,
+      .button:focus-visible {
+        transform: translateY(-2px);
+      }
+
+      .button-primary {
+        background: linear-gradient(135deg, var(--blue), var(--magenta));
+        color: #10131d;
+        box-shadow: 0 12px 32px rgba(122, 162, 247, 0.28);
+      }
+
+      .button-secondary {
+        border-color: var(--border-strong);
+        color: var(--heading);
+        background: rgba(26, 27, 38, 0.4);
+      }
+
+      .signal-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .signal-row span,
+      .card-tag,
+      .project-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.45rem 0.8rem;
+        border: 1px solid rgba(115, 218, 202, 0.2);
+        border-radius: 999px;
+        background: rgba(115, 218, 202, 0.08);
+        color: var(--cyan);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+      }
+
+      .hero-panel {
+        position: relative;
+      }
+
+      .terminal-shell,
+      .glass-card,
+      .project-card,
+      .metric-card,
+      .contact-card {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: linear-gradient(
+          180deg,
+          rgba(36, 40, 59, 0.82),
+          rgba(22, 24, 35, 0.86)
+        );
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .terminal-shell {
+        overflow: hidden;
+      }
+
+      .terminal-topbar {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 1rem 1.2rem;
+        border-bottom: 1px solid rgba(122, 162, 247, 0.16);
+        background: rgba(17, 19, 30, 0.8);
+      }
+
+      .terminal-topbar span {
+        width: 0.7rem;
+        height: 0.7rem;
+        border-radius: 999px;
+      }
+
+      .terminal-topbar span:nth-child(1) {
+        background: var(--red);
+      }
+
+      .terminal-topbar span:nth-child(2) {
+        background: #e0af68;
+      }
+
+      .terminal-topbar span:nth-child(3) {
+        background: #9ece6a;
+      }
+
+      .terminal-topbar p,
+      .prompt-line,
+      .output-label {
+        margin: 0;
+        font-family: "IBM Plex Mono", monospace;
+      }
+
+      .terminal-topbar p {
+        margin-left: auto;
+        color: var(--text-muted);
+        font-size: 0.82rem;
+      }
+
+      .terminal-body {
+        padding: 1.35rem;
+      }
+
+      .prompt-line {
+        display: flex;
+        gap: 0.6rem;
+        margin-bottom: 1.5rem;
+        color: var(--heading);
+      }
+
+      .prompt-label {
+        color: var(--cyan);
+      }
+
+      .prompt-command::after {
+        content: "";
+        display: inline-block;
+        width: 0.65ch;
+        height: 1em;
+        margin-left: 0.15rem;
+        background: var(--blue);
+        vertical-align: -0.12em;
+        animation: blink 1s steps(1) infinite;
+      }
+
+      .terminal-output {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .terminal-output article {
+        padding: 1rem;
+        border-radius: 18px;
+        background: rgba(122, 162, 247, 0.06);
+        border: 1px solid rgba(122, 162, 247, 0.12);
+      }
+
+      .output-label {
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        color: var(--cyan);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .terminal-output strong {
+        display: block;
+        margin-bottom: 0.45rem;
+        color: var(--heading);
+      }
+
+      .metrics,
+      .card-grid,
+      .project-grid {
+        display: grid;
+        gap: 1.2rem;
+      }
+
+      .metrics,
+      .card-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .project-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .metric-card,
+      .glass-card,
+      .project-card,
+      .contact-card,
+      .founder-note {
+        padding: 1.5rem;
+      }
+
+      .metric-value {
+        display: inline-block;
+        margin-bottom: 1rem;
+        color: var(--blue);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 2.2rem;
+      }
+
+      .section-heading {
+        max-width: 46rem;
+        margin-bottom: 2rem;
+      }
+
+      .split-section {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.65fr);
+        gap: 1.2rem 2rem;
+        align-items: start;
+      }
+
+      .split-section .section-heading {
+        grid-column: 1 / -1;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 9rem minmax(0, 1fr);
+        gap: 1.25rem;
+        padding: 1.25rem 0;
+        border-bottom: 1px solid rgba(122, 162, 247, 0.14);
+      }
+
+      .timeline-item:last-child {
+        border-bottom: 0;
+      }
+
+      .timeline-date {
+        color: var(--blue);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.86rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .project-card {
+        transition:
+          transform 220ms ease,
+          border-color 220ms ease,
+          box-shadow 220ms ease;
+      }
+
+      .project-card:hover,
+      .project-card:focus-visible,
+      .glass-card:hover,
+      .metric-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--border-strong);
+        box-shadow:
+          var(--shadow),
+          0 0 0 1px rgba(122, 162, 247, 0.14);
+      }
+
+      .contact-section {
+        padding-bottom: 6rem;
+      }
+
+      .contact-card {
+        max-width: 56rem;
+      }
+
+      .site-footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0 0 2rem;
+        color: var(--text-muted);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.82rem;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 700ms ease,
+          transform 700ms ease;
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @keyframes blink {
+        0%,
+        49% {
+          opacity: 1;
+        }
+        50%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      @media (max-width: 1024px) {
+        .hero,
+        .split-section,
+        .metrics,
+        .card-grid,
+        .project-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          min-height: auto;
+          padding-top: 3rem;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .site-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .site-nav {
+          width: 100%;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          border-radius: 22px;
+        }
+
+        h1 {
+          font-size: clamp(2.7rem, 17vw, 4.2rem);
+        }
+
+        h2 {
+          line-height: 1.08;
+        }
+
+        .timeline-item {
+          grid-template-columns: 1fr;
+          gap: 0.5rem;
+        }
+
+        .site-footer {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background-grid" aria-hidden="true"></div>
+    <div class="background-glow background-glow-a" aria-hidden="true"></div>
+    <div class="background-glow background-glow-b" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#top">
+        <span class="brand-mark">AL</span>
+        <span class="brand-copy">
+          <strong>Algalon Labs</strong>
+          <span>Developer systems for the Cardano frontier</span>
+        </span>
+      </a>
+
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#capabilities">Capabilities</a>
+        <a href="#work">Work</a>
+        <a href="#opensource">Open Source</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero section">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">
+            Vancouver, Canada • protocol-aware • open source
+          </p>
+          <h1>
+            Tokyo Night interfaces for teams shipping real blockchain
+            infrastructure.
+          </h1>
+          <p class="hero-text">
+            Algalon Labs builds observability and visualization tools for
+            Cardano, with a developer-first focus on high-signal data systems,
+            protocol visibility, and interfaces that make complex networks
+            legible.
+          </p>
+
+          <div class="hero-actions">
+            <a
+              class="button button-primary"
+              href="https://github.com/AlgalonLabs"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Explore GitHub
+            </a>
+            <a class="button button-secondary" href="#work">
+              See what we build
+            </a>
+          </div>
+
+          <div class="signal-row" aria-label="Studio focus areas">
+            <span>Cardano observability</span>
+            <span>Blockchain visualization</span>
+            <span>Rust + Python systems</span>
+            <span>Protocol-grade data pipelines</span>
+          </div>
+        </div>
+
+        <div class="hero-panel reveal" aria-label="Telemetry preview">
+          <div class="terminal-shell">
+            <div class="terminal-topbar">
+              <span></span>
+              <span></span>
+              <span></span>
+              <p>tokyo-night://studio-console</p>
+            </div>
+            <div class="terminal-body">
+              <p class="prompt-line">
+                <span class="prompt-label">studio@algalon</span>
+                <span class="prompt-command" id="commandText"></span>
+              </p>
+              <div class="terminal-output">
+                <article>
+                  <span class="output-label">status</span>
+                  <strong>active build loop</strong>
+                  <p>Designing tools that reduce protocol ambiguity.</p>
+                </article>
+                <article>
+                  <span class="output-label">focus</span>
+                  <strong>Cardano data visibility</strong>
+                  <p>
+                    Graph-native views, event streams, and operator-grade UX.
+                  </p>
+                </article>
+                <article>
+                  <span class="output-label">approach</span>
+                  <strong>engineer-first product design</strong>
+                  <p>
+                    Static, fast, precise, and built to communicate state
+                    clearly.
+                  </p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="metrics section reveal">
+        <div class="metric-card">
+          <span class="metric-value">01</span>
+          <p>
+            Interactive blockchain visualization for human-readable system
+            state.
+          </p>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value">02</span>
+          <p>
+            Observability workflows for operators, researchers, and protocol
+            engineers.
+          </p>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value">03</span>
+          <p>
+            Open-source experiments across graph tooling, telemetry, and
+            analytics.
+          </p>
+        </div>
+      </section>
+
+      <section class="section" id="capabilities">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Capabilities</p>
+          <h2>Built for developers who need more than dashboards.</h2>
+        </div>
+
+        <div class="card-grid">
+          <article class="glass-card reveal">
+            <p class="card-tag">Visualization</p>
+            <h3>Blockchain visualizer</h3>
+            <p>
+              Graph theory applied to chain activity, topology, and protocol
+              events so teams can inspect behavior instead of guessing at it.
+            </p>
+          </article>
+          <article class="glass-card reveal">
+            <p class="card-tag">Observability</p>
+            <h3>Telemetry with structure</h3>
+            <p>
+              High-signal views over event streams, message flow, and system
+              health with interfaces that privilege comprehension over noise.
+            </p>
+          </article>
+          <article class="glass-card reveal">
+            <p class="card-tag">Infrastructure</p>
+            <h3>Protocol-grade data systems</h3>
+            <p>
+              Rust and Python services for indexing, analytics, and backend
+              workflows that need to keep pace with production networks.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section split-section" id="work">
+        <div class="section-heading reveal">
+          <p class="eyebrow">What Informs The Work</p>
+          <h2>
+            Experience across blockchain infrastructure and data-heavy systems.
+          </h2>
+        </div>
+
+        <div class="timeline reveal">
+          <article class="timeline-item">
+            <span class="timeline-date">2025 → Present</span>
+            <div>
+              <h3>Sundae Labs</h3>
+              <p>
+                Building modular Cardano node infrastructure in Rust in
+                collaboration with core ecosystem engineering efforts.
+              </p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <span class="timeline-date">2024 → 2025</span>
+            <div>
+              <h3>Frigid</h3>
+              <p>
+                Shipped high-throughput data pipelines indexing Cardano DEX
+                activity for real-time analytics and insight generation.
+              </p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <span class="timeline-date">2019 → 2024</span>
+            <div>
+              <h3>CLIR Renewables</h3>
+              <p>
+                Built production data and DevOps workflows at scale across
+                renewable energy and analytics systems.
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <aside class="founder-note glass-card reveal">
+          <p class="card-tag">Operator Notes</p>
+          <h3>Why this company exists</h3>
+          <p>
+            Most blockchain tooling still leaves developers mentally
+            reconstructing system behavior from scattered traces. Algalon Labs
+            is aimed at closing that gap with tools that are rigorous, visual,
+            and immediately useful.
+          </p>
+        </aside>
+      </section>
+
+      <section class="section" id="opensource">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Open Source Surface Area</p>
+          <h2>
+            Shipping experiments in public is part of the product strategy.
+          </h2>
+        </div>
+
+        <div class="project-grid">
+          <a
+            class="project-card reveal"
+            href="https://github.com/input-output-hk/acropolis"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span class="project-tag">Core contribution</span>
+            <h3>Acropolis</h3>
+            <p>Rust-based modular Cardano node architecture.</p>
+          </a>
+          <a
+            class="project-card reveal"
+            href="https://github.com/lowhung/buswatch"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span class="project-tag">Observability</span>
+            <h3>Buswatch</h3>
+            <p>Message bus diagnostics across RabbitMQ, Kafka, and NATS.</p>
+          </a>
+          <a
+            class="project-card reveal"
+            href="https://github.com/lowhung/neuronic"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span class="project-tag">Visualization</span>
+            <h3>Neuronic</h3>
+            <p>Real-time graph views for distributed system topology.</p>
+          </a>
+          <a
+            class="project-card reveal"
+            href="https://github.com/lowhung/engram"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span class="project-tag">Generative systems</span>
+            <h3>Engram</h3>
+            <p>Neural and systems-inspired generative art pipelines.</p>
+          </a>
+        </div>
+      </section>
+
+      <section class="section contact-section" id="contact">
+        <div class="contact-card reveal">
+          <p class="eyebrow">Contact</p>
+          <h2>Need a developer-facing interface for hard systems?</h2>
+          <p>
+            Start with the GitHub organization. The current site is static by
+            design: fast to ship, easy to audit, and easy to iterate as the
+            studio evolves.
+          </p>
+          <div class="hero-actions">
+            <a
+              class="button button-primary"
+              href="https://github.com/AlgalonLabs"
+              target="_blank"
+              rel="noreferrer"
+            >
+              github.com/AlgalonLabs
+            </a>
+            <a
+              class="button button-secondary"
+              href="https://github.com/lowhung/lowhung.github.io"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Personal site reference
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Algalon Labs</p>
+      <p>Static by default. Precise by intent.</p>
+    </footer>
+
+    <script>
+      const commands = [
+        "render --network cardano --view topology",
+        "observe --pipeline dex-trades --mode live",
+        "inspect --surface validator-health --format graph",
+        "trace --protocol midnight --detail operator",
+      ];
+
+      const commandText = document.getElementById("commandText");
+      const revealItems = document.querySelectorAll(".reveal");
+
+      function cycleCommands() {
+        if (!commandText) {
+          return;
+        }
+
+        let commandIndex = 0;
+        let charIndex = 0;
+        let deleting = false;
+
+        const tick = () => {
+          const current = commands[commandIndex];
+
+          if (deleting) {
+            charIndex -= 1;
+          } else {
+            charIndex += 1;
+          }
+
+          commandText.textContent = current.slice(0, charIndex);
+
+          if (!deleting && charIndex === current.length) {
+            deleting = true;
+            setTimeout(tick, 1400);
+            return;
+          }
+
+          if (deleting && charIndex === 0) {
+            deleting = false;
+            commandIndex = (commandIndex + 1) % commands.length;
+          }
+
+          setTimeout(tick, deleting ? 30 : 55);
+        };
+
+        tick();
+      }
+
+      function setupRevealObserver() {
+        if (!("IntersectionObserver" in window)) {
+          revealItems.forEach((item) => item.classList.add("is-visible"));
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            threshold: 0.2,
+          },
+        );
+
+        revealItems.forEach((item) => observer.observe(item));
+      }
+
+      cycleCommands();
+      setupRevealObserver();
+    </script>
+  </body>
+</html>
