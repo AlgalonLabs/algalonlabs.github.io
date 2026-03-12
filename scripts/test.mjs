@@ -14,7 +14,7 @@ const html = readFileSync("index.html", "utf8");
 const assertions = [
   {
     check: html.includes(
-      "<title>Algalon Labs | Tokyo Night Developer Tooling</title>",
+      "<title>Algalon Labs | Cardano Developer Infrastructure</title>",
     ),
     message: "Missing expected document title.",
   },
@@ -27,8 +27,9 @@ const assertions = [
     message: "Home page should link to the AlgalonLabs GitHub org.",
   },
   {
-    check: html.includes("Tokyo Night interfaces"),
-    message: "Hero copy drifted from the intended theme.",
+    check: html.includes("Algalon Labs is a Cardano company"),
+    message:
+      "Hero copy should clearly position Algalon Labs as a Cardano company.",
   },
 ];
 
